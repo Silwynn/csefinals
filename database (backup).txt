@@ -1,0 +1,59 @@
+use athletes_and_events;
+-- Gender Table
+CREATE TABLE Gender (
+    gender_code CHAR(1) PRIMARY KEY,
+    gender_description VARCHAR(50)
+);
+
+-- Club Table
+CREATE TABLE Club (
+    club_id INT PRIMARY KEY,
+    club_name VARCHAR(100),
+    club_location VARCHAR(100)
+);
+
+-- Category Table
+CREATE TABLE Category (
+    category_code CHAR(1) PRIMARY KEY,
+    category_description VARCHAR(50)
+);
+
+-- Event Type Table
+CREATE TABLE Event_Type (
+    event_type_code CHAR(1) PRIMARY KEY,
+    event_type_description VARCHAR(50)
+);
+
+-- Event Series Table
+CREATE TABLE Event_Series (
+    series_number INT PRIMARY KEY,
+    series_date_time DATETIME,
+    series_name VARCHAR(100)
+);
+
+-- Athlete Table (connected to Gender and Club)
+CREATE TABLE Athlete (
+    athlete_id INT PRIMARY KEY,
+    athlete_firstname VARCHAR(50),
+    athlete_surname VARCHAR(50),
+    athlete_other_details TEXT,
+    gender_code CHAR(1),
+    club_id INT,
+    FOREIGN KEY (gender_code) REFERENCES Gender(gender_code) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (club_id) REFERENCES Club(club_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Event Table (connected to Category, Event_Type, and Event_Series)
+CREATE TABLE Event (
+    event_id INT PRIMARY KEY,
+    event_date DATE,
+    event_name VARCHAR(100),
+    event_distance DECIMAL(5,2),
+    event_other_details TEXT,
+    category_code CHAR(1),
+    event_type_code CHAR(1),
+    series_number INT,
+    FOREIGN KEY (category_code) REFERENCES Category(category_code) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (event_type_code) REFERENCES Event_Type(event_type_code) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (series_number) REFERENCES Event_Series(series_number) ON DELETE CASCADE ON UPDATE CASCADE
+);

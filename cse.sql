@@ -1,0 +1,1 @@
+SELECT * FROM athletes_and_events.athlete;
